@@ -91,7 +91,7 @@ export default async function ProtectedLayout({
         </Suspense>
 
         <main className="flex flex-1 flex-col gap-4 p-4 pt-6 overflow-y-auto overflow-x-hidden min-h-[calc(100vh-4rem)]">
-          <div className="mx-auto w-full max-w-7xl">{children}</div>
+          <div className="mx-auto w-full max-w-fit">{children}</div>
 
           {/* Account Activation Dialog - Only show if user is not active */}
           {user?.active === false && (

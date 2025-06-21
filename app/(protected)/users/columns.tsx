@@ -170,23 +170,6 @@ export const columns: ColumnDef<UserDTO>[] = [
     },
   },
   {
-    accessorKey: "units",
-    header: "Jednostki",
-    cell: ({ row }) => {
-      const units: { id: string; tag: string }[] = row.getValue("units") || [];
-      if (units.length === 0) return <span>Brak przypisanych jednostek</span>;
-      return (
-        <ul className="list-disc list-inside space-y-1">
-          {units.map(({ id, tag }) => (
-            <div key={id}>
-              <Badge variant="outline">{tag}</Badge>
-            </div>
-          ))}
-        </ul>
-      );
-    },
-  },
-  {
     id: "actions",
     cell: function ActionsCell({ row }) {
       return (

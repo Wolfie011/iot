@@ -34,7 +34,6 @@ import { UpdateUserInput, UserDTO } from "@/types/user/types";
 import { listRoles } from "@/app/actions/role.action";
 import { listRoleJobs } from "@/app/actions/role-job.action";
 import { updateUser } from "@/app/actions/user.action";
-import { listObjectsByType } from "@/app/actions/object.action";
 
 type Option = { value: string; label: string };
 
@@ -55,9 +54,7 @@ export function UserManagementDialog({
   const [allRoles, setAllRoles] = useState<Option[]>([]);
   const [isLoadingRoleJob, setIsLoadingRoleJob] = useState(true);
   const [allRoleJobs, setAllRoleJobs] = useState<Option[]>([]);
-  const [units, setUnits] = useState<Option[]>([]);
-  const [isLoadingUnits, setIsLoadingUnits] = useState(true);
-  
+
   const form = useForm<UpdateUserInput>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
@@ -71,11 +68,6 @@ export function UserManagementDialog({
         user.roleJob?.map(({ id, tag }) => ({ value: id, label: tag })) || [],
       permissionRole:
         user.permissionRole?.map(({ id, tag }) => ({
-          value: id,
-          label: tag,
-        })) || [],
-      unitId:
-        user.units?.map(({ id, tag }) => ({
           value: id,
           label: tag,
         })) || [],
@@ -94,11 +86,6 @@ export function UserManagementDialog({
         user.roleJob?.map(({ id, tag }) => ({ value: id, label: tag })) || [],
       permissionRole:
         user.permissionRole?.map(({ id, tag }) => ({
-          value: id,
-          label: tag,
-        })) || [],
-      unitId:
-        user.units?.map(({ id, tag }) => ({
           value: id,
           label: tag,
         })) || [],
@@ -146,26 +133,6 @@ export function UserManagementDialog({
       } finally {
         setIsLoadingRoleJob(false);
       }
-
-      try {
-        setIsLoadingUnits(true);
-        const unitsRes = await listObjectsByType("Unit");
-        if (unitsRes.state === "success" && unitsRes.data) {
-          setUnits(
-            unitsRes.data.map((rj) => ({ value: rj.id, label: rj.name }))
-          );
-        } else {
-          throw new Error(unitsRes.error);
-        }
-      } catch {
-        toast({
-          title: "Błąd",
-          description: "Wystąpił błąd podczas ładowania jednostek.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoadingUnits(false);
-      }
     }
 
     if (open) fetchData();
@@ -176,8 +143,8 @@ export function UserManagementDialog({
       inputValue.trim() === ""
         ? allRoles
         : allRoles.filter((role) =>
-            role.label.toLowerCase().includes(inputValue.toLowerCase())
-          )
+          role.label.toLowerCase().includes(inputValue.toLowerCase())
+        )
     );
 
   const promiseRoleJob = (inputValue: string): Promise<Option[]> =>
@@ -185,17 +152,8 @@ export function UserManagementDialog({
       inputValue.trim() === ""
         ? allRoleJobs
         : allRoleJobs.filter((rj) =>
-            rj.label.toLowerCase().includes(inputValue.toLowerCase())
-          )
-    );
-
-  const promiseUnit = (inputValue: string): Promise<Option[]> =>
-    Promise.resolve(
-      inputValue.trim() === ""
-        ? units
-        : units.filter((rj) =>
-            rj.label.toLowerCase().includes(inputValue.toLowerCase())
-          )
+          rj.label.toLowerCase().includes(inputValue.toLowerCase())
+        )
     );
 
   const onSubmit = useCallback(
@@ -215,9 +173,9 @@ export function UserManagementDialog({
           variant: "default",
           description: res.success || "Użytkownik został zaktualizowany",
         });
-        if(!res.data){
+        if (!res.data) {
           toast({
-            variant: "destructive", 
+            variant: "destructive",
             description: "Nie otrzymano danych użytkownika po aktualizacji."
           });
           return;
@@ -369,29 +327,6 @@ export function UserManagementDialog({
                         isDisabled={isLoadingRole}
                         isLoading={isLoadingRole}
                         loadOptions={promiseRole}
-                        onChange={(selected: Option[]) =>
-                          field.onChange(selected || [])
-                        }
-                        value={field.value || []}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="unitId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Jednostki</FormLabel>
-                      <ThemedAsyncSelect
-                        isMulti
-                        cacheOptions
-                        defaultOptions
-                        isDisabled={isLoadingUnits}
-                        isLoading={isLoadingUnits}
-                        loadOptions={promiseUnit}
                         onChange={(selected: Option[]) =>
                           field.onChange(selected || [])
                         }

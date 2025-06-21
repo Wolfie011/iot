@@ -82,7 +82,7 @@ export default function RootLayout({
   return (
 <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={`${inter.className} antialiased min-h-screen bg-background font-sans`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <div className="relative flex min-h-screen flex-col">{children}</div>
           <Toaster />
         </ThemeProvider>

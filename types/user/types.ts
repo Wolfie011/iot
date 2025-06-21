@@ -23,3 +23,5 @@ export type UserDTO = Omit<
 
 // Rola robocza (powiązana z jednostką lub odpowiedzialnością)
 export type RoleJob = InferSelectModel<typeof roleJobTable>;
+
+export type roleJob = InferSelectModel<typeof roleJobTable>;

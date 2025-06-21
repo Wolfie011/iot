@@ -118,7 +118,7 @@ export function AppSidebar({ authUser, ...props }: AppSidebarProps) {
 
               {/* Application Title */}
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">MedicalTech</span>
+                <span className="truncate font-semibold">IIoT</span>
                 <span className="truncate text-xs text-sidebar-foreground/70">Management System</span>
               </div>
 
